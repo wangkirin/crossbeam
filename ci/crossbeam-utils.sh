@@ -1,7 +1,9 @@
 #!/bin/bash
 
-cd "$(dirname "$0")"/../crossbeam-utils
 set -ex
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+cd "$script_dir"/../crossbeam-utils
 
 export RUSTFLAGS="-D warnings"
 
@@ -12,4 +14,6 @@ if [[ "$RUST_VERSION" == "nightly"* ]]; then
     cargo test --features nightly
 
     RUSTDOCFLAGS=-Dwarnings cargo doc --no-deps --all-features
+
+    "$script_dir"/miri.sh -- -Zmiri-disable-isolation
 fi

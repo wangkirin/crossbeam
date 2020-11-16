@@ -1,7 +1,9 @@
 #!/bin/bash
 
-cd "$(dirname "$0")"/../crossbeam-epoch
 set -ex
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+cd "$script_dir"/../crossbeam-epoch
 
 export RUSTFLAGS="-D warnings"
 
@@ -22,4 +24,8 @@ if [[ "$RUST_VERSION" == "nightly"* ]]; then
             --features sanitize,nightly \
             --example sanitize
     fi
+
+    # -Zmiri-disable-stacked-borrows is needed for https://github.com/crossbeam-rs/crossbeam/issues/545
+    # -Zmiri-ignore-leaks is needed for https://github.com/crossbeam-rs/crossbeam/issues/579
+    "$script_dir"/miri.sh -- -Zmiri-disable-stacked-borrows -Zmiri-ignore-leaks
 fi
