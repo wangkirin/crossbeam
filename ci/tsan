@@ -8,3 +8,6 @@ race:crossbeam_epoch
 # forgotten and the steal operation is then retried.
 race:crossbeam_deque*push
 race:crossbeam_deque*steal
+
+# AtomicCell::compare_exchange uses fences if it is not lock-free.
+race:crossbeam_utils::atomic::atomic_cell::AtomicCell<T>::compare_exchange

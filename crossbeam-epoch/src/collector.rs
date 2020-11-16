@@ -199,6 +199,7 @@ mod tests {
         .unwrap();
     }
 
+    #[cfg(not(feature = "sanitize"))]
     #[test]
     fn incremental() {
         const COUNT: usize = 100_000;
