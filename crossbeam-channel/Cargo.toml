@@ -23,6 +23,12 @@ default = ["std"]
 # This is enabled by default.
 std = ["crossbeam-utils/std"]
 
+# TODO: Once `cfg(sanitize = "..")` is stable, replace this.
+# An internal feature used when running sanitizers.
+# This is not part of the public API and crossbeam may make breaking changes
+# to them at any time.
+sanitize = []
+
 [dependencies]
 cfg-if = "1"
 

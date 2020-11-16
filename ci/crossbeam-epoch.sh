@@ -1,7 +1,9 @@
 #!/bin/bash
 
-cd "$(dirname "$0")"/../crossbeam-epoch
 set -ex
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+cd "$script_dir"/../crossbeam-epoch
 
 export RUSTFLAGS="-D warnings"
 
@@ -14,7 +16,10 @@ if [[ "$RUST_VERSION" == "nightly"* ]]; then
     RUSTDOCFLAGS=-Dwarnings cargo doc --no-deps --all-features
 
     if [[ "$OSTYPE" == "linux"* ]]; then
-        ASAN_OPTIONS="detect_odr_violation=0 detect_leaks=0" \
+        # Run sanitizers
+        export TSAN_OPTIONS="suppressions=$script_dir/tsan"
+        "$script_dir"/san.sh --features sanitize,nightly
+
         RUSTFLAGS="-Z sanitizer=address" \
         cargo run \
             --release \

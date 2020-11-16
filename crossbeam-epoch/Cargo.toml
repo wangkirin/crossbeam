@@ -33,7 +33,10 @@ alloc = []
 # of crossbeam may make breaking changes to them at any time.
 nightly = ["crossbeam-utils/nightly"]
 
-# TODO: docs
+# TODO: Once `cfg(sanitize = "..")` is stable, replace this.
+# An internal feature used when running sanitizers.
+# This is not part of the public API and crossbeam may make breaking changes
+# to them at any time.
 sanitize = [] # Makes it more likely to trigger any potential data races.
 
 [dependencies]
